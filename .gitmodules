@@ -1,0 +1,3 @@
+[submodule "obuilder"]
+	path = obuilder
+	url = git@github.com:MisterDA/obuilder.git

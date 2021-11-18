@@ -1,3 +1,7 @@
+(vendored_dirs obuilder)
+
 (executable
  (name main)
- (libraries astring fmt fmt.cli fmt.tty logs logs.cli logs.fmt tar tar-unix obuilder-spec))
+ (preprocess (pps ppx_sexp_conv))
+ (libraries astring fmt fmt.cli fmt.tty logs logs.cli logs.fmt tar tar-unix obuilder-spec sexplib sha))
+
