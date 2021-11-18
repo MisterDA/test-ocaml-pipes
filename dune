@@ -1,0 +1,3 @@
+(executable
+ (name main)
+ (libraries astring fmt fmt.cli fmt.tty logs logs.cli logs.fmt tar tar-unix obuilder-spec))
