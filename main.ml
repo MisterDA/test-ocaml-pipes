@@ -76,10 +76,13 @@ let exec ~stdin ~stdout argv =
   | Unix.WSIGNALED x -> Fmt.failwith "%t failed with signal %d" pp x
   | Unix.WSTOPPED x -> Fmt.failwith "%t stopped with signal %a" pp pp_signal x
 
-(* let volume     = "obuilder-d16cf18-volume" *)
-(* let base_image = "obuilder-d16cf18-image-6c21b8e220f828e8b8a75360ed0cc09d56c672701104cec56b270491af575173" *)
-(* let tmp_image  = "obuilder-d16cf18-image-tmp-535c2e30461f6205107d3525bddae6ec3f2c70bb6ae126ce66cb43b034513e66" *)
-(* let container  = "obuilder-d16cf18-container-535c2e30461f6205107d3525bddae6ec3f2c70bb6ae126ce66cb43b034513e66" *)
+let cpus = string_of_int 6
+let volume     = "obuilder-d16cf18-volume"
+let base_image = "obuilder-d16cf18-image-6c21b8e220f828e8b8a75360ed0cc09d56c672701104cec56b270491af575173"
+let tmp_image  = "obuilder-d16cf18-image-tmp-535c2e30461f6205107d3525bddae6ec3f2c70bb6ae126ce66cb43b034513e66"
+let container  = "obuilder-d16cf18-container-535c2e30461f6205107d3525bddae6ec3f2c70bb6ae126ce66cb43b034513e66"
+
+let strf = Printf.sprintf
 
 let main =
   let input ~stdout =
@@ -101,7 +104,7 @@ let main =
           "-i";
           "--rm";
           "--cpus";
-          "6";
+          cpus;
           "--isolation";
           "hyperv";
           "--hostname";
@@ -109,12 +112,12 @@ let main =
           "--workdir";
           "C:/";
           "--entrypoint";
-          "C://obuilder-d16cf18-volume/tar.exe";
+          strf "C://%s/tar.exe" volume;
           "--user";
           "ContainerAdministrator";
           "--mount";
-          "type=volume,src=obuilder-d16cf18-volume,dst=C:/obuilder-d16cf18-volume,readonly";
-          "obuilder-d16cf18-image-6c21b8e220f828e8b8a75360ed0cc09d56c672701104cec56b270491af575173";
+          strf "type=volume,src=%s,dst=C:/%s,readonly" volume volume;
+          base_image;
           "-cf-";
           "--format=gnu";
           "--directory";
@@ -149,9 +152,9 @@ let main =
           "run";
           "-i";
           "--name";
-          "obuilder-d16cf18-container-535c2e30461f6205107d3525bddae6ec3f2c70bb6ae126ce66cb43b034513e66";
+          container;
           "--cpus";
-          "6";
+          cpus;
           "--isolation";
           "hyperv";
           "--hostname";
@@ -163,8 +166,8 @@ let main =
           "--user";
           "ContainerAdministrator";
           "--mount";
-          "type=volume,src=obuilder-d16cf18-volume,dst=C:/obuilder-d16cf18-volume,readonly";
-          "obuilder-d16cf18-image-tmp-535c2e30461f6205107d3525bddae6ec3f2c70bb6ae126ce66cb43b034513e66";
+          strf "type=volume,src=%s,dst=C:/%s,readonly" volume volume;
+          tmp_image;
           "-xf";
           "-";
           "--verbose";
@@ -186,7 +189,7 @@ let main style_renderer level =
       [|
         "docker";
         "rm";
-        "/obuilder-d16cf18-container-535c2e30461f6205107d3525bddae6ec3f2c70bb6ae126ce66cb43b034513e66";
+        strf "/%s" container;
       |]
       Unix.stdin Unix.stdout Unix.stderr
   in
