@@ -1,3 +1,6 @@
 [submodule "obuilder"]
 	path = obuilder
 	url = git@github.com:MisterDA/obuilder.git
+[submodule "ocaml-tar"]
+	path = ocaml-tar
+	url = git@github.com:MisterDA/ocaml-tar.git

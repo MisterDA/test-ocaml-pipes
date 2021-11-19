@@ -1,7 +1,22 @@
-(vendored_dirs obuilder)
+(vendored_dirs obuilder ocaml-tar)
 
 (executable
  (name main)
- (preprocess (pps ppx_sexp_conv))
- (libraries astring fmt fmt.cli fmt.tty logs logs.cli logs.fmt tar tar-unix obuilder-spec sexplib sha))
-
+ (preprocess
+  (pps lwt_ppx ppx_sexp_conv))
+ (libraries
+  astring
+  cmdliner
+  fmt
+  fmt.cli
+  fmt.tty
+  logs
+  logs.cli
+  logs.fmt
+  lwt
+  lwt.unix
+  obuilder-spec
+  sexplib
+  sha
+  tar
+  tar-unix))
